@@ -11,13 +11,34 @@ export const fetchCompanies = async (filters: any = {}) => {
   }
 
   // Apply filters
-  const { company_name, business_id, industry, city, company_type, min_revenue, max_revenue, min_date, max_date } = filters;
+  const { 
+    company_name, 
+    business_id, 
+    industry, 
+    location, 
+    city, 
+    company_type, 
+    address, 
+    postal_code, 
+    website, 
+    status, 
+    min_revenue, 
+    max_revenue, 
+    min_date, 
+    max_date 
+  } = filters;
   
   if (company_name) query = query.ilike('name', `%${company_name}%`);
-  if (business_id) query = query.eq('business_id', business_id);
-  if (industry) query = query.eq('industry', industry);
+  if (business_id) query = query.ilike('business_id', `%${business_id}%`);
+  if (industry) query = query.ilike('industry', `%${industry}%`);
+  // Map location filter to city field since location column doesn't exist
+  if (location) query = query.ilike('city', `%${location}%`);
   if (city) query = query.ilike('city', `%${city}%`);
   if (company_type) query = query.eq('company_type', company_type);
+  if (address) query = query.ilike('address', `%${address}%`);
+  if (postal_code) query = query.ilike('postal_code', `%${postal_code}%`);
+  if (website) query = query.ilike('website', `%${website}%`);
+  if (status) query = query.eq('status', status);
   if (min_revenue) query = query.gte('revenue', parseFloat(min_revenue));
   if (max_revenue) query = query.lte('revenue', parseFloat(max_revenue));
   if (min_date) query = query.gte('registration_date', min_date);

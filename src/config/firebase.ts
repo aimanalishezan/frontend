@@ -25,7 +25,7 @@ export const auth = getAuth(app);
 // Initialize Google Auth Provider
 export const googleProvider = new GoogleAuthProvider();
 
-// Initialize Analytics (optional)
-export const analytics = getAnalytics(app);
+// Initialize Analytics (only in production to avoid development errors)
+export const analytics = import.meta.env.PROD ? getAnalytics(app) : null;
 
 export default app;

@@ -91,14 +91,41 @@ export interface CompanyFilters {
   /** Search query string */
   search?: string;
   
+  /** Filter by company name */
+  company_name?: string;
+  
+  /** Filter by business ID */
+  business_id?: string;
+  
   /** Filter by industry */
   industry?: string;
+  
+  /** Filter by location */
+  location?: string;
   
   /** Filter by city */
   city?: string;
   
   /** Filter by company type */
   company_type?: string;
+  
+  /** Filter by address */
+  address?: string;
+  
+  /** Filter by postal code */
+  postal_code?: string;
+  
+  /** Filter by website */
+  website?: string;
+  
+  /** Filter by status */
+  status?: string;
+  
+  /** Filter by minimum revenue */
+  min_revenue?: string;
+  
+  /** Filter by maximum revenue */
+  max_revenue?: string;
   
   /** Filter by minimum registration date (YYYY-MM-DD) */
   min_date?: string;
