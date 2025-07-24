@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Search, Filter, Tag, Building2, Factory, Truck, ShoppingCart, Briefcase, Heart, GraduationCap, Palette, TreePine, Hammer, Zap, Globe, Users, Home, Wrench, ArrowLeft, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import Navbar from './Navbar';
 
 interface ClassificationItem {
   code: string;
@@ -34,115 +35,139 @@ const ClassificationCategorizer: React.FC<ClassificationCategorizerProps> = ({
   const [tempSelectedCategories, setTempSelectedCategories] = useState<string[]>(selectedCategories);
   const [loading, setLoading] = useState(true);
 
-  // Define category groups with keywords for automatic classification
+  // Define category groups with keywords for automatic classification - Updated to match ClassificationSelector
   const categoryGroups: { [key: string]: Omit<CategoryGroup, 'items'> } = {
-    agriculture: {
-      name: 'Agriculture & Forestry',
+    A: {
+      name: 'Agriculture & Farming',
       icon: <TreePine className="w-5 h-5" />,
       color: 'bg-green-100 text-green-800 border-green-200',
-      keywords: ['agriculture', 'forestry', 'fishing', 'crop', 'animal', 'farming', 'growing', 'hunting', 'silviculture', 'logging', 'aquaculture']
+      keywords: ['agriculture', 'forestry', 'fishing', 'farming', 'crop', 'animal', 'hunting', 'aquaculture', 'silviculture', 'logging', 'marine', 'freshwater', 'cattle', 'dairy', 'poultry', 'livestock', 'cereals', 'vegetables', 'fruits', 'grapes', 'tobacco', 'flowers', 'plant', 'propagation']
     },
-    mining: {
+    B: {
       name: 'Mining & Extraction',
       icon: <Factory className="w-5 h-5" />,
-      color: 'bg-gray-100 text-gray-800 border-gray-200',
-      keywords: ['mining', 'quarrying', 'extraction', 'petroleum', 'gas', 'coal', 'ore', 'stone', 'sand', 'clay']
+      color: 'bg-amber-100 text-amber-800 border-amber-200',
+      keywords: ['mining', 'quarrying', 'extraction', 'coal', 'lignite', 'petroleum', 'natural gas', 'metal', 'iron', 'uranium', 'stone', 'sand', 'clay', 'gravel', 'salt', 'peat', 'chemical', 'fertiliser', 'minerals']
     },
-    manufacturing: {
-      name: 'Manufacturing',
+    C: {
+      name: 'Manufacturing & Production',
       icon: <Factory className="w-5 h-5" />,
       color: 'bg-blue-100 text-blue-800 border-blue-200',
-      keywords: ['manufacture', 'production', 'processing', 'food products', 'beverages', 'textiles', 'chemicals', 'machinery', 'equipment']
+      keywords: ['manufacturing', 'production', 'food', 'beverage', 'tobacco', 'textile', 'clothing', 'leather', 'wood', 'paper', 'printing', 'coke', 'petroleum', 'chemical', 'pharmaceutical', 'rubber', 'plastic', 'metal', 'machinery', 'equipment', 'furniture', 'repair', 'meat', 'dairy', 'bakery', 'sugar', 'wine', 'beer', 'spirits']
     },
-    energy: {
+    D: {
       name: 'Energy & Utilities',
       icon: <Zap className="w-5 h-5" />,
       color: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-      keywords: ['electricity', 'gas', 'steam', 'water', 'sewerage', 'waste', 'supply', 'distribution', 'energy']
+      keywords: ['electricity', 'gas', 'steam', 'air conditioning', 'energy', 'power', 'utility', 'electric', 'generation', 'transmission', 'distribution', 'supply']
     },
-    construction: {
-      name: 'Construction',
+    E: {
+      name: 'Water & Waste Management',
+      icon: <Globe className="w-5 h-5" />,
+      color: 'bg-cyan-100 text-cyan-800 border-cyan-200',
+      keywords: ['water', 'supply', 'sewerage', 'waste', 'management', 'remediation', 'collection', 'treatment', 'disposal', 'recovery', 'materials', 'recycling']
+    },
+    F: {
+      name: 'Construction & Building',
       icon: <Hammer className="w-5 h-5" />,
       color: 'bg-orange-100 text-orange-800 border-orange-200',
-      keywords: ['construction', 'building', 'civil engineering', 'demolition', 'installation', 'roofing', 'plumbing', 'electrical']
+      keywords: ['construction', 'building', 'civil', 'engineering', 'specialized', 'residential', 'non-residential', 'demolition', 'site', 'preparation', 'electrical', 'plumbing', 'installation', 'finishing']
     },
-    trade: {
+    G: {
       name: 'Trade & Retail',
       icon: <ShoppingCart className="w-5 h-5" />,
       color: 'bg-purple-100 text-purple-800 border-purple-200',
-      keywords: ['wholesale', 'retail', 'trade', 'sale', 'motor vehicles', 'repair', 'maintenance']
+      keywords: ['wholesale', 'retail', 'trade', 'sale', 'motor', 'vehicle', 'repair', 'maintenance', 'parts', 'accessories', 'fuel', 'food', 'beverage', 'tobacco', 'household', 'goods', 'machinery', 'equipment']
     },
-    transport: {
+    H: {
       name: 'Transportation & Logistics',
       icon: <Truck className="w-5 h-5" />,
       color: 'bg-indigo-100 text-indigo-800 border-indigo-200',
-      keywords: ['transport', 'storage', 'postal', 'courier', 'warehousing', 'logistics', 'shipping']
+      keywords: ['transportation', 'storage', 'land', 'water', 'air', 'warehousing', 'postal', 'courier', 'logistics', 'railway', 'road', 'freight', 'passenger', 'pipeline', 'supporting', 'handling']
     },
-    hospitality: {
+    I: {
       name: 'Hospitality & Tourism',
       icon: <Building2 className="w-5 h-5" />,
       color: 'bg-pink-100 text-pink-800 border-pink-200',
-      keywords: ['accommodation', 'food service', 'restaurant', 'hotel', 'tourism', 'catering']
+      keywords: ['accommodation', 'food', 'service', 'hotel', 'restaurant', 'tourism', 'hospitality', 'short-term', 'camping', 'recreational', 'vehicle', 'parks', 'beverage', 'serving']
     },
-    information: {
-      name: 'Information & Technology',
+    J: {
+      name: 'Media & Publishing',
       icon: <Globe className="w-5 h-5" />,
-      color: 'bg-cyan-100 text-cyan-800 border-cyan-200',
-      keywords: ['information', 'communication', 'publishing', 'telecommunications', 'computer', 'software', 'data processing']
+      color: 'bg-indigo-100 text-indigo-800 border-indigo-200',
+      keywords: ['publishing', 'broadcasting', 'content', 'production', 'distribution', 'books', 'journals', 'newspapers', 'software', 'motion', 'picture', 'video', 'television', 'radio', 'music', 'sound', 'recording']
     },
-    finance: {
+    K: {
+      name: 'Technology & IT Services',
+      icon: <Globe className="w-5 h-5" />,
+      color: 'bg-blue-100 text-blue-800 border-blue-200',
+      keywords: ['telecommunication', 'computer', 'programming', 'consulting', 'computing', 'infrastructure', 'information', 'service', 'wired', 'wireless', 'satellite', 'internet', 'data', 'processing', 'hosting', 'web', 'portals']
+    },
+    L: {
       name: 'Finance & Insurance',
       icon: <Briefcase className="w-5 h-5" />,
       color: 'bg-emerald-100 text-emerald-800 border-emerald-200',
-      keywords: ['financial', 'insurance', 'banking', 'credit', 'investment', 'pension', 'fund']
+      keywords: ['financial', 'insurance', 'banking', 'credit', 'fund', 'pension', 'investment', 'monetary', 'intermediation', 'central', 'bank', 'deposit', 'taking', 'life', 'non-life', 'reinsurance', 'auxiliary']
     },
-    realestate: {
-      name: 'Real Estate',
+    M: {
+      name: 'Real Estate & Property',
       icon: <Home className="w-5 h-5" />,
       color: 'bg-teal-100 text-teal-800 border-teal-200',
-      keywords: ['real estate', 'property', 'rental', 'leasing']
+      keywords: ['real estate', 'property', 'rental', 'leasing', 'estate', 'buying', 'selling', 'renting', 'operating', 'own', 'leased', 'residential', 'non-residential']
     },
-    professional: {
+    N: {
       name: 'Professional Services',
       icon: <Briefcase className="w-5 h-5" />,
-      color: 'bg-slate-100 text-slate-800 border-slate-200',
-      keywords: ['professional', 'scientific', 'technical', 'legal', 'accounting', 'consulting', 'research', 'development']
-    },
-    administrative: {
-      name: 'Administrative Services',
-      icon: <Users className="w-5 h-5" />,
       color: 'bg-violet-100 text-violet-800 border-violet-200',
-      keywords: ['administrative', 'support', 'employment', 'travel', 'security', 'cleaning', 'office']
+      keywords: ['professional', 'scientific', 'technical', 'legal', 'accounting', 'management', 'consulting', 'architectural', 'engineering', 'research', 'development', 'advertising', 'market', 'design', 'photography', 'translation', 'veterinary', 'head', 'offices', 'specialized']
     },
-    public: {
-      name: 'Public Administration',
+    O: {
+      name: 'Administrative Support',
+      icon: <Users className="w-5 h-5" />,
+      color: 'bg-teal-100 text-teal-800 border-teal-200',
+      keywords: ['administrative', 'support', 'service', 'rental', 'leasing', 'employment', 'travel', 'security', 'investigation', 'services', 'building', 'landscape', 'office', 'machinery', 'equipment', 'agency', 'tour', 'operator']
+    },
+    P: {
+      name: 'Government & Public Services',
       icon: <Building2 className="w-5 h-5" />,
       color: 'bg-red-100 text-red-800 border-red-200',
-      keywords: ['public administration', 'defence', 'social security', 'government']
+      keywords: ['public', 'administration', 'defence', 'social', 'security', 'government', 'general', 'regulation', 'economic', 'affairs', 'foreign', 'justice', 'order', 'safety', 'compulsory']
     },
-    education: {
-      name: 'Education',
+    Q: {
+      name: 'Education & Training',
       icon: <GraduationCap className="w-5 h-5" />,
-      color: 'bg-amber-100 text-amber-800 border-amber-200',
-      keywords: ['education', 'teaching', 'training', 'school', 'university']
+      color: 'bg-blue-100 text-blue-800 border-blue-200',
+      keywords: ['education', 'teaching', 'school', 'university', 'training', 'learning', 'pre-primary', 'primary', 'secondary', 'higher', 'technical', 'vocational', 'cultural', 'sports', 'recreation', 'educational', 'support']
     },
-    health: {
-      name: 'Health & Social Care',
+    R: {
+      name: 'Healthcare & Social Services',
       icon: <Heart className="w-5 h-5" />,
-      color: 'bg-rose-100 text-rose-800 border-rose-200',
-      keywords: ['health', 'medical', 'social', 'care', 'hospital', 'nursing', 'residential']
+      color: 'bg-green-100 text-green-800 border-green-200',
+      keywords: ['health', 'social', 'work', 'human', 'medical', 'hospital', 'nursing', 'care', 'residential', 'diagnostic', 'therapy', 'dental', 'practice', 'activities', 'mental', 'disability', 'elderly', 'child', 'day']
     },
-    arts: {
-      name: 'Arts & Recreation',
+    S: {
+      name: 'Arts & Entertainment',
       icon: <Palette className="w-5 h-5" />,
-      color: 'bg-fuchsia-100 text-fuchsia-800 border-fuchsia-200',
-      keywords: ['arts', 'entertainment', 'recreation', 'sports', 'cultural', 'gambling', 'amusement']
+      color: 'bg-pink-100 text-pink-800 border-pink-200',
+      keywords: ['arts', 'entertainment', 'recreation', 'creative', 'sports', 'amusement', 'gambling', 'library', 'museum', 'performing', 'artistic', 'literary', 'cultural', 'facilities', 'fitness', 'other']
     },
-    other: {
-      name: 'Other Services',
+    T: {
+      name: 'Personal & Other Services',
       icon: <Wrench className="w-5 h-5" />,
-      color: 'bg-stone-100 text-stone-800 border-stone-200',
-      keywords: ['repair', 'personal service', 'membership', 'household', 'extraterritorial']
+      color: 'bg-gray-100 text-gray-800 border-gray-200',
+      keywords: ['other', 'service', 'activities', 'membership', 'organizations', 'repair', 'maintenance', 'personal', 'household', 'goods', 'religious', 'political', 'trade', 'unions', 'professional']
+    },
+    U: {
+      name: 'Household Services',
+      icon: <Home className="w-5 h-5" />,
+      color: 'bg-amber-100 text-amber-800 border-amber-200',
+      keywords: ['households', 'employers', 'domestic', 'personnel', 'undifferentiated', 'goods', 'services', 'producing', 'activities', 'own', 'use']
+    },
+    V: {
+      name: 'International Organizations',
+      icon: <Globe className="w-5 h-5" />,
+      color: 'bg-indigo-100 text-indigo-800 border-indigo-200',
+      keywords: ['extraterritorial', 'organisations', 'bodies', 'international', 'diplomatic', 'consular', 'missions', 'foreign', 'embassies']
     }
   };
 
@@ -156,7 +181,7 @@ const ClassificationCategorizer: React.FC<ClassificationCategorizerProps> = ({
       }
     }
     
-    return 'other';
+    return 'T'; // Default to 'Personal & Other Services' category
   };
 
   // Parse CSV data
@@ -273,6 +298,9 @@ const ClassificationCategorizer: React.FC<ClassificationCategorizerProps> = ({
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Navbar */}
+      <Navbar />
+      
       {/* Header with back button */}
       {showBackButton && (
         <div className="bg-white border-b border-gray-200 px-6 py-4">
@@ -302,7 +330,7 @@ const ClassificationCategorizer: React.FC<ClassificationCategorizerProps> = ({
           </div>
         </div>
       )}
-      <div className="p-6">
+      <div className="p-6 pt-20">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
