@@ -92,9 +92,9 @@ export default function FilterPanel({ filters, onFiltersChange, onSearch, onRese
               <div className="flex items-center space-x-3">
                 <div className="w-2 h-2 bg-gradient-to-b from-green-500 to-emerald-600 rounded-full"></div>
                 <h4 className="text-sm font-bold text-slate-800 dark:text-gray-200 uppercase tracking-wide">Company Details</h4>
-                {getSectionActiveCount(['company_name', 'business_id', 'industry']) > 0 && (
+                {getSectionActiveCount(['company_name', 'business_id']) > 0 && (
                   <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200">
-                    {getSectionActiveCount(['company_name', 'business_id', 'industry'])}
+                    {getSectionActiveCount(['company_name', 'business_id'])}
                   </span>
                 )}
               </div>
@@ -138,20 +138,7 @@ export default function FilterPanel({ filters, onFiltersChange, onSearch, onRese
               />
             </div>
             
-            <div>
-              <label htmlFor="industry" className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
-                Industry
-              </label>
-              <input
-                type="text"
-                name="industry"
-                id="industry"
-                value={filters.industry}
-                onChange={handleFilterChange}
-                className="block w-full rounded-xl border-slate-300 dark:border-gray-600 bg-white dark:bg-gray-100 px-4 py-3 text-sm text-slate-900 dark:text-gray-900 shadow-sm transition-all duration-200 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 hover:border-slate-400 dark:hover:border-gray-500 hover:shadow-md placeholder:text-slate-400 dark:placeholder:text-gray-500"
-                placeholder="e.g. Technology, Healthcare"
-             />
-           </div>
+
                </div>
              )}
            </div>
@@ -231,9 +218,9 @@ export default function FilterPanel({ filters, onFiltersChange, onSearch, onRese
              <div className="flex items-center space-x-3">
                <div className="w-2 h-2 bg-gradient-to-b from-green-500 to-emerald-600 rounded-full"></div>
                <h4 className="text-sm font-bold text-slate-800 dark:text-gray-200 uppercase tracking-wide">Additional Information</h4>
-               {getSectionActiveCount(['website', 'status']) > 0 && (
+               {getSectionActiveCount(['website']) > 0 && (
                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200">
-                   {getSectionActiveCount(['website', 'status'])}
+                   {getSectionActiveCount(['website'])}
                  </span>
                )}
              </div>
@@ -262,24 +249,7 @@ export default function FilterPanel({ filters, onFiltersChange, onSearch, onRese
              />
            </div>
            
-           <div>
-             <label htmlFor="status" className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
-               Status
-             </label>
-             <select
-               id="status"
-               name="status"
-               value={filters.status}
-               onChange={handleFilterChange}
-               className="block w-full rounded-xl border-slate-300 dark:border-gray-600 bg-white dark:bg-gray-100 px-4 py-3 text-sm text-slate-900 dark:text-gray-900 shadow-sm transition-all duration-200 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 hover:border-slate-400 dark:hover:border-gray-500 hover:shadow-md placeholder:text-slate-400 dark:placeholder:text-gray-500"
-             >
-               <option value="">All Statuses</option>
-               <option value="active">Active</option>
-               <option value="inactive">Inactive</option>
-               <option value="pending">Pending</option>
-               <option value="suspended">Suspended</option>
-             </select>
-           </div>
+
                </div>
              )}
            </div>

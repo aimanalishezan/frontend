@@ -290,31 +290,31 @@ const ClassificationCategorizer: React.FC<ClassificationCategorizerProps> = ({
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Navbar */}
       <Navbar />
       
       {/* Header with back button */}
       {showBackButton && (
-        <div className="bg-white border-b border-gray-200 px-6 py-4">
+        <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4">
           <div className="flex items-center justify-between">
             <button
               onClick={handleBackToDashboard}
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
             >
               <ArrowLeft className="h-4 w-4" />
               Back to Dashboard
             </button>
             {onCategoriesSelect && (
               <div className="flex items-center gap-3">
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-gray-600 dark:text-gray-300">
                   {tempSelectedCategories.length} categories selected
                 </span>
                 <button
@@ -333,16 +333,16 @@ const ClassificationCategorizer: React.FC<ClassificationCategorizerProps> = ({
       <div className="p-6 pt-20">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
             Finnish Business Classification System
           </h1>
-          <p className="text-gray-600">
+          <p className="text-gray-600 dark:text-gray-300">
             Search and categorize business activities by industry type. Total classifications: {data.length}
           </p>
         </div>
 
         {/* Search and Filter Controls */}
-        <div className="bg-white rounded-lg shadow-sm border p-6 mb-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-6">
           <div className="flex flex-col lg:flex-row gap-4">
             <div className="flex-1">
               <div className="relative">
@@ -352,7 +352,7 @@ const ClassificationCategorizer: React.FC<ClassificationCategorizerProps> = ({
                   placeholder="Search classifications..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                 />
               </div>
             </div>
@@ -362,7 +362,7 @@ const ClassificationCategorizer: React.FC<ClassificationCategorizerProps> = ({
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 >
                   <option value="all">All Categories</option>
                   {Object.entries(categoryGroups).map(([key, group]) => (
@@ -408,36 +408,36 @@ const ClassificationCategorizer: React.FC<ClassificationCategorizerProps> = ({
         </div>
 
         {/* Results */}
-        <div className="bg-white rounded-lg shadow-sm border">
-          <div className="p-6 border-b">
-            <h2 className="text-xl font-semibold text-gray-900">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+          <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
               {selectedCategory === 'all' ? 'All Classifications' : categoryGroups[selectedCategory]?.name}
-              <span className="text-gray-500 font-normal ml-2">({filteredData.length} results)</span>
+              <span className="text-gray-500 dark:text-gray-400 font-normal ml-2">({filteredData.length} results)</span>
             </h2>
           </div>
           
-          <div className="divide-y divide-gray-200 max-h-96 overflow-y-auto">
+          <div className="divide-y divide-gray-200 dark:divide-gray-700 max-h-96 overflow-y-auto">
             {filteredData.map((item, index) => {
               const category = categorizeItem(item);
               const categoryInfo = categoryGroups[category];
               
               return (
-                <div key={index} className="p-4 hover:bg-gray-50">
+                <div key={index} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <span className="font-mono text-sm bg-gray-100 px-2 py-1 rounded">
+                        <span className="font-mono text-sm bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 px-2 py-1 rounded">
                           {item.code}
                         </span>
                         <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium border ${categoryInfo.color}`}>
                           {categoryInfo.icon}
                           {categoryInfo.name}
                         </span>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-gray-500 dark:text-gray-400">
                           Level {item.level}
                         </span>
                       </div>
-                      <h3 className="font-medium text-gray-900">
+                      <h3 className="font-medium text-gray-900 dark:text-white">
                         {item.classificationName}
                       </h3>
                     </div>
@@ -448,7 +448,7 @@ const ClassificationCategorizer: React.FC<ClassificationCategorizerProps> = ({
           </div>
           
           {filteredData.length === 0 && (
-            <div className="p-8 text-center text-gray-500">
+            <div className="p-8 text-center text-gray-500 dark:text-gray-400">
               <Search className="w-12 h-12 mx-auto mb-4 opacity-50" />
               <p>No classifications found matching your criteria.</p>
             </div>
