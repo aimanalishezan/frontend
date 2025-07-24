@@ -19,6 +19,7 @@ export default function Dashboard() {
     location: '',
     city: '',
     company_type: '',
+    business_categories: [] as string[],
     address: '',
     postal_code: '',
     website: '',
@@ -46,6 +47,27 @@ export default function Dashboard() {
     setCurrentPage(1);
   }, [filters]);
 
+  // Check for selected classifications from sessionStorage on component mount
+  useEffect(() => {
+    const selectedClassifications = sessionStorage.getItem('selectedClassifications');
+    if (selectedClassifications) {
+      try {
+        const categories = JSON.parse(selectedClassifications);
+        if (Array.isArray(categories) && categories.length > 0) {
+          setFilters(prev => ({
+            ...prev,
+            business_categories: categories
+          }));
+          // Clear the sessionStorage after applying
+          sessionStorage.removeItem('selectedClassifications');
+        }
+      } catch (error) {
+        console.error('Error parsing selected classifications:', error);
+        sessionStorage.removeItem('selectedClassifications');
+      }
+    }
+  }, []);
+
   const handleFiltersChange = (newFilters: typeof filters) => {
     setFilters(newFilters);
   };
@@ -63,6 +85,7 @@ export default function Dashboard() {
       location: '',
       city: '',
       company_type: '',
+      business_categories: [],
       address: '',
       postal_code: '',
       website: '',

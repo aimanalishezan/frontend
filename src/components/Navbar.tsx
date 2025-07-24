@@ -53,7 +53,12 @@ export default function Navbar({ onToggleSidebar, showSidebarToggle = false }: N
                     >
                       Dashboard
                     </Link>
-                    {/* Add more navigation items here */}
+                    <Link
+                      to="/classifications"
+                      className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-white hover:text-green-100 hover:border-green-300 transition-colors"
+                    >
+                      Classifications
+                    </Link>
                   </div>
                 )}
               </div>
@@ -165,7 +170,13 @@ export default function Navbar({ onToggleSidebar, showSidebarToggle = false }: N
               >
                 Dashboard
               </Disclosure.Button>
-              {/* Add more mobile navigation items here */}
+              <Disclosure.Button
+                as={Link}
+                to="/classifications"
+                className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-white hover:bg-green-700 hover:border-green-300 transition-colors"
+              >
+                Classifications
+              </Disclosure.Button>
             </div>
             <div className="border-t border-green-500 pb-3 pt-4">
               {isAuthenticated ? (

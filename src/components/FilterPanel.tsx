@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FunnelIcon, XMarkIcon, AdjustmentsHorizontalIcon, MagnifyingGlassIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
+import ClassificationSelector from './ClassificationSelector';
 
 interface FilterPanelProps {
   filters: {
@@ -11,6 +12,7 @@ interface FilterPanelProps {
     location: string;
     city: string;
     company_type: string;
+    business_categories: string[];
     address: string;
     postal_code: string;
     website: string;
@@ -49,7 +51,10 @@ export default function FilterPanel({ filters, onFiltersChange, onSearch, onRese
   };
   
   const getSectionActiveCount = (sectionFilters: string[]) => {
-    return sectionFilters.filter(key => filters[key as keyof typeof filters] !== '').length;
+    return sectionFilters.filter(key => {
+      const value = filters[key as keyof typeof filters];
+      return Array.isArray(value) ? value.length > 0 : value !== '';
+    }).length;
   };
 
   return (
@@ -160,9 +165,9 @@ export default function FilterPanel({ filters, onFiltersChange, onSearch, onRese
              <div className="flex items-center space-x-3">
                <div className="w-2 h-2 bg-gradient-to-b from-green-500 to-emerald-600 rounded-full"></div>
                <h4 className="text-sm font-bold text-slate-800 dark:text-gray-200 uppercase tracking-wide">Location & Type</h4>
-               {getSectionActiveCount(['city', 'company_type', 'postal_code']) > 0 && (
+               {getSectionActiveCount(['city', 'company_type', 'business_categories', 'postal_code']) > 0 && (
                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200">
-                   {getSectionActiveCount(['city', 'company_type', 'postal_code'])}
+                   {getSectionActiveCount(['city', 'company_type', 'business_categories', 'postal_code'])}
                  </span>
                )}
              </div>
@@ -193,23 +198,10 @@ export default function FilterPanel({ filters, onFiltersChange, onSearch, onRese
            </div>
            
            <div>
-             <label htmlFor="company_type" className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
-               Company Type
-             </label>
-             <select
-               id="company_type"
-               name="company_type"
-               value={filters.company_type}
-               onChange={handleFilterChange}
-               className="block w-full rounded-xl border-slate-300 dark:border-gray-600 bg-white dark:bg-gray-100 px-4 py-3 text-sm text-slate-900 dark:text-gray-900 shadow-sm transition-all duration-200 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 hover:border-slate-400 dark:hover:border-gray-500 hover:shadow-md placeholder:text-slate-400 dark:placeholder:text-gray-500"
-             >
-               <option value="">All Types</option>
-               <option value="Corporation">Corporation</option>
-               <option value="LLC">LLC</option>
-               <option value="Sole Proprietorship">Sole Proprietorship</option>
-               <option value="Partnership">Partnership</option>
-               <option value="Non-Profit">Non-Profit</option>
-             </select>
+             <ClassificationSelector
+               selectedCategories={filters.business_categories || []}
+               onCategoriesChange={(categories) => onFiltersChange({ ...filters, business_categories: categories })}
+             />
            </div>
            
            <div>
