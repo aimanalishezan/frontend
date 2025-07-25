@@ -26,7 +26,7 @@ export default function Navbar({ onToggleSidebar, showSidebarToggle = false }: N
   };
 
   return (
-    <Disclosure as="nav" className={`bg-green-600 shadow-lg transition-colors duration-200 ${location.pathname === '/' || location.pathname === '/about' || location.pathname === '/contact' ? 'sticky top-0 z-50' : ''}`}>
+    <Disclosure as="nav" className={`bg-green-600 shadow-lg transition-colors duration-200 ${location.pathname === '/' || location.pathname === '/about' || location.pathname === '/contact' || location.pathname === '/classifications' ? 'sticky top-0 z-50' : ''}`}>
       {({ open }) => (
         <>
           <div className="w-full px-4 sm:px-6 lg:px-8">
