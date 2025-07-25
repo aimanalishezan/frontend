@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon, SunIcon, MoonIcon, FunnelIcon } from '@heroicons/react/24/outline';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 
@@ -18,6 +18,7 @@ export default function Navbar({ onToggleSidebar, showSidebarToggle = false }: N
   const { user, logout, isAuthenticated } = useAuth();
   const { isDark, toggleTheme } = useTheme();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = () => {
     logout();
@@ -25,7 +26,7 @@ export default function Navbar({ onToggleSidebar, showSidebarToggle = false }: N
   };
 
   return (
-    <Disclosure as="nav" className="bg-green-600 shadow-lg transition-colors duration-200">
+    <Disclosure as="nav" className={`bg-green-600 shadow-lg transition-colors duration-200 ${location.pathname === '/' || location.pathname === '/about' || location.pathname === '/contact' ? 'sticky top-0 z-50' : ''}`}>
       {({ open }) => (
         <>
           <div className="w-full px-4 sm:px-6 lg:px-8">
