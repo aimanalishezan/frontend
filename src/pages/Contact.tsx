@@ -8,7 +8,6 @@ const Contact: React.FC = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
       <Navbar />
-      <div className="pt-16">
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-green-500 to-emerald-600 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -162,7 +161,7 @@ const Contact: React.FC = () => {
                 
                 <div>
                   <h3 className="text-lg font-medium text-gray-900 dark:text-white">Business ID</h3>
-                  <p className="text-gray-700 dark:text-gray-300">2494283-6</p>
+                  <p className="text-gray-700 dark:text-gray-300">2964678-1</p>
                 </div>
                 
                 <div>
@@ -270,7 +269,6 @@ const Contact: React.FC = () => {
             </form>
           </div>
         </div>
-      </div>
       </div>
     </div>
   );

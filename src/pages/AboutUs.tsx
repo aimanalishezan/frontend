@@ -8,7 +8,6 @@ const AboutUs: React.FC = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
       <Navbar />
-      <div className="pt-16">
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-green-500 to-emerald-600 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -82,7 +81,7 @@ const AboutUs: React.FC = () => {
             <div className="text-center">
               <div className="w-32 h-32 mx-auto mb-4">
                 <img 
-                  src="/src/assets/jani-niemi.jpg" 
+                  src="/jani-niemi.jpg" 
                   alt="Jani Niemi" 
                   className="w-32 h-32 rounded-full object-cover"
                 />
@@ -157,7 +156,6 @@ const AboutUs: React.FC = () => {
             Get in touch with us
           </Link>
         </div>
-      </div>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon, SunIcon, MoonIcon, FunnelIcon } from '@heroicons/react/24/outline';
 import { Link, useNavigate } from 'react-router-dom';
@@ -18,17 +18,6 @@ export default function Navbar({ onToggleSidebar, showSidebarToggle = false }: N
   const { user, logout, isAuthenticated } = useAuth();
   const { isDark, toggleTheme } = useTheme();
   const navigate = useNavigate();
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      setIsScrolled(scrollTop > 10);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const handleLogout = () => {
     logout();
@@ -36,9 +25,7 @@ export default function Navbar({ onToggleSidebar, showSidebarToggle = false }: N
   };
 
   return (
-    <Disclosure as="nav" className={`fixed top-0 left-0 right-0 z-50 shadow-lg transition-all duration-300 ${
-      isScrolled ? 'bg-green-600/50 backdrop-blur-md' : 'bg-green-600'
-    }`}>
+    <Disclosure as="nav" className="bg-green-600 shadow-lg transition-colors duration-200">
       {({ open }) => (
         <>
           <div className="w-full px-4 sm:px-6 lg:px-8">
@@ -61,7 +48,7 @@ export default function Navbar({ onToggleSidebar, showSidebarToggle = false }: N
 
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:items-center space-x-3">
-                {/* Navigation Links - Right side */}
+                {/* About Us and Contact - Right side */}
                 <div className="flex items-center space-x-4">
                   <Link
                     to="/about"
@@ -75,23 +62,25 @@ export default function Navbar({ onToggleSidebar, showSidebarToggle = false }: N
                   >
                     Contact
                   </Link>
-                  {isAuthenticated && (
-                    <>
-                      <Link
-                        to="/dashboard"
-                        className="inline-flex items-center px-3 py-2 text-sm font-medium text-white hover:text-green-100 hover:bg-green-700 rounded-md transition-colors duration-200"
-                      >
-                        Dashboard
-                      </Link>
-                      <Link
-                        to="/classifications"
-                        className="inline-flex items-center px-3 py-2 text-sm font-medium text-white hover:text-green-100 hover:bg-green-700 rounded-md transition-colors duration-200"
-                      >
-                        Classifications
-                      </Link>
-                    </>
-                  )}
                 </div>
+                
+                {/* Dashboard and Classifications - Right side */}
+                {isAuthenticated && (
+                  <div className="flex items-center space-x-4">
+                    <Link
+                      to="/dashboard"
+                      className="inline-flex items-center px-3 py-2 text-sm font-medium text-white hover:text-green-100 hover:bg-green-700 rounded-md transition-colors duration-200"
+                    >
+                      Dashboard
+                    </Link>
+                    <Link
+                      to="/classifications"
+                      className="inline-flex items-center px-3 py-2 text-sm font-medium text-white hover:text-green-100 hover:bg-green-700 rounded-md transition-colors duration-200"
+                    >
+                      Classifications
+                    </Link>
+                  </div>
+                )}
                 
                 {/* Dark Mode Toggle */}
                 <button

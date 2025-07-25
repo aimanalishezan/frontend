@@ -1,0 +1,6 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="64" cy="64" r="64" fill="#e5e7eb"/>
+  <circle cx="64" cy="50" r="20" fill="#9ca3af"/>
+  <path d="M30 100 Q30 80 64 80 Q98 80 98 100 L98 128 L30 128 Z" fill="#9ca3af"/>
+  <text x="64" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#374151">Jani Niemi</text>
+</svg>
