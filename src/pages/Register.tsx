@@ -37,7 +37,7 @@ const Register: React.FC = () => {
     try {
       setIsLoading(true);
       await register(email, password, displayName);
-      navigate('/');
+      navigate('/dashboard');
     } catch (err: any) {
       setError(err.message || 'Registration failed. Please try again.');
       console.error('Registration error:', err);
@@ -50,7 +50,7 @@ const Register: React.FC = () => {
     try {
       setIsLoading(true);
       await loginWithGoogle();
-      navigate('/');
+      navigate('/dashboard');
     } catch (err: any) {
       setError(err.message || 'Google sign-up failed. Please try again.');
       console.error('Google sign-up error:', err);

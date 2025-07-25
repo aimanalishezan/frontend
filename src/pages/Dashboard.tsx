@@ -103,6 +103,58 @@ export default function Dashboard() {
     console.log('Sort by:', field);
   };
 
+  const generateSmartFilename = () => {
+    const timestamp = new Date().toISOString().slice(0, 10);
+    let filenameParts = ['company_data'];
+    
+    // Add location-based naming
+    if (filters.location) {
+      filenameParts.push(`of_${filters.location.toLowerCase().replace(/\s+/g, '_')}`);
+    } else if (filters.city) {
+      filenameParts.push(`of_${filters.city.toLowerCase().replace(/\s+/g, '_')}`);
+    }
+    
+    // Add search term if present
+    if (filters.search) {
+      filenameParts.push(`search_${filters.search.toLowerCase().replace(/\s+/g, '_')}`);
+    } else if (filters.company_name) {
+      filenameParts.push(`name_${filters.company_name.toLowerCase().replace(/\s+/g, '_')}`);
+    }
+    
+    // Add business categories if filtered
+    if (filters.business_categories.length > 0) {
+      const categories = filters.business_categories.slice(0, 2).join('_').toLowerCase().replace(/\s+/g, '_');
+      filenameParts.push(`categories_${categories}`);
+    }
+    
+    // Add postal code if present
+    if (filters.postal_code) {
+      filenameParts.push(`postal_${filters.postal_code}`);
+    }
+    
+    // Add revenue filter if present
+    if (filters.min_revenue) {
+      filenameParts.push(`min_revenue_${filters.min_revenue}`);
+    }
+    
+    // Add company type if filtered
+    if (filters.company_type) {
+      filenameParts.push(`type_${filters.company_type.toLowerCase().replace(/\s+/g, '_')}`);
+    }
+    
+    // Add timestamp
+    filenameParts.push(timestamp);
+    
+    // Join parts and ensure filename isn't too long
+    let filename = filenameParts.join('_');
+    if (filename.length > 100) {
+      // Truncate if too long, keeping timestamp
+      filename = filenameParts.slice(0, 3).join('_') + '_' + timestamp;
+    }
+    
+    return `${filename}.xlsx`;
+  };
+
   const handleExport = async () => {
     try {
       const response = await fetchCompanies({
@@ -111,7 +163,49 @@ export default function Dashboard() {
       });
       
       if (response?.data?.length > 0) {
-        exportToExcel(response.data, 'companies_export');
+        const filename = generateSmartFilename();
+        const baseFilename = filename.replace('.xlsx', '');
+        
+        exportToExcel(response.data, baseFilename);
+        
+        // Save download history
+        const downloadRecord = {
+          id: Date.now().toString(),
+          filename: filename,
+          downloadDate: new Date(),
+          filterCriteria: {
+            searchTerm: filters.search || filters.company_name,
+            location: filters.location || filters.city,
+            postalCode: filters.postal_code,
+            website: filters.website,
+            minRevenue: filters.min_revenue ? parseInt(filters.min_revenue) : undefined,
+            classifications: filters.business_categories.length > 0 ? filters.business_categories : undefined,
+          },
+          recordCount: response.data.length
+        };
+        
+        // Get existing download history
+        const existingHistory = localStorage.getItem('downloadHistory');
+        let history = [];
+        if (existingHistory) {
+          try {
+            history = JSON.parse(existingHistory);
+          } catch (error) {
+            console.error('Error parsing download history:', error);
+          }
+        }
+        
+        // Add new record to the beginning of the array
+        history.unshift(downloadRecord);
+        
+        // Keep only the last 50 downloads
+        if (history.length > 50) {
+          history = history.slice(0, 50);
+        }
+        
+        // Save updated history
+        localStorage.setItem('downloadHistory', JSON.stringify(history));
+        
         toast.success('Export completed successfully');
       } else {
         toast.error('No data to export');

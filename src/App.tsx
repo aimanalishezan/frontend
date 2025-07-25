@@ -5,7 +5,11 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import CompanyDetail from './pages/CompanyDetail';
+import LandingPage from './pages/LandingPage';
+import AboutUs from './pages/AboutUs';
+import Contact from './pages/Contact';
 import ClassificationCategorizer from './components/ClassificationCategorizer';
+import UserProfile from './pages/UserProfile';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -17,10 +21,13 @@ function App() {
       <AuthProvider>
         <div className="min-h-screen">
           <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/about" element={<AboutUs />} />
+            <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route
-              path="/"
+              path="/dashboard"
               element={
                 <PrivateRoute>
                   <Dashboard />
@@ -40,6 +47,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <ClassificationCategorizerWrapper />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <PrivateRoute>
+                  <UserProfile />
                 </PrivateRoute>
               }
             />

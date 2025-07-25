@@ -26,7 +26,7 @@ const Login: React.FC = () => {
     try {
       setIsLoading(true);
       await login(email, password);
-      navigate('/');
+      navigate('/dashboard');
     } catch (err: any) {
       setError(err.message || 'Login failed. Please check your credentials and try again.');
       console.error('Login error:', err);
@@ -39,7 +39,7 @@ const Login: React.FC = () => {
     try {
       setIsLoading(true);
       await loginWithGoogle();
-      navigate('/');
+      navigate('/dashboard');
     } catch (err: any) {
       setError(err.message || 'Google sign-in failed. Please try again.');
       console.error('Google sign-in error:', err);
