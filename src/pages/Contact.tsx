@@ -161,7 +161,7 @@ const Contact: React.FC = () => {
                 
                 <div>
                   <h3 className="text-lg font-medium text-gray-900 dark:text-white">Business ID</h3>
-                  <p className="text-gray-700 dark:text-gray-300">2964678-1</p>
+                  <p className="text-gray-700 dark:text-gray-300">2494283-6</p>
                 </div>
                 
                 <div>
